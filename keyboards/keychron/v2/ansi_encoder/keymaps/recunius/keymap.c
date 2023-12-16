@@ -77,33 +77,28 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 #endif // ENCODER_MAP_ENABLE
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
 }
 
-// const uinit8_t layer_leds = { CAPS_LOCK_LED_INDEX, }
-
+const uint8_t layer_leds[] = { 57, 58, 59, 60, 61, 62, 63 };
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    switch(get_highest_layer(layer_state|default_layer_state)) {
-        case _FN0:
-            rgb_matrix_set_color(CAPS_LOCK_LED_INDEX, RGB_GREEN);
-            rgb_matrix_set_color(57, RGB_GREEN);
-            break;
-        case _FN1:
-            rgb_matrix_set_color(CAPS_LOCK_LED_INDEX, RGB_ORANGE);
-            rgb_matrix_set_color(57, RGB_ORANGE);
-            break;
-        case _FN_GAME0:
-            rgb_matrix_set_color(CAPS_LOCK_LED_INDEX, RGB_BLUE);
-            rgb_matrix_set_color(57, RGB_BLUE);
-            break;
-        case _FN_GAME1:
-            rgb_matrix_set_color(CAPS_LOCK_LED_INDEX, RGB_MAGENTA);
-            rgb_matrix_set_color(57, RGB_MAGENTA);
-            break;
-        default:
-            rgb_matrix_set_color(CAPS_LOCK_LED_INDEX, RGB_OFF);
-            rgb_matrix_set_color(57, RGB_OFF);
-            break;
+    for(int i=0; i < sizeof(layer_leds) / sizeof(uint8_t); i++) {
+        switch(get_highest_layer(layer_state|default_layer_state)) {
+            case _FN0:
+                rgb_matrix_set_color(layer_leds[i], RGB_GREEN);
+                break;
+            case _FN1:
+                rgb_matrix_set_color(layer_leds[i], RGB_ORANGE);
+                break;
+            case _FN_GAME0:
+                rgb_matrix_set_color(layer_leds[i], RGB_BLUE);
+                break;
+            case _FN_GAME1:
+                rgb_matrix_set_color(layer_leds[i], RGB_MAGENTA);
+                break;
+            default:
+                rgb_matrix_set_color(layer_leds[i], RGB_OFF);
+                break;
+        }
     }
     return false;
 }
